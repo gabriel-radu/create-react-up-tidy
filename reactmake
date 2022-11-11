@@ -1,0 +1,122 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+if [ "$1" == "-help" ]; then
+    echo "Reactmake is a script that I've made to make my create-react-app setup easier, it deletes some unnecesary files that I will not use."
+    echo "It makes a new react app in a folder of choice."
+    echo "Use reactmake -start --javascript [dir] to make a javascript react app"
+    echo "Alternatively, you can use reactmake -start --typescript [dir] to make a typescript react app."
+    echo -e "${RED}Please make sure that you have nodejs verion 14 or higher and npm installed${NC}"
+    echo ""
+
+    echo "Options: -start, -help"
+    echo "Argumentts: --javascript, --typescript"
+elif [ "$1" == "-start" ]; then
+    case $2 in
+        --javascript)
+            if [ -d "$3" ]; then
+                echo -e "${GREEN}Starting...${NC}"
+                npx create-react-app $3
+                cd test1
+                echo -e "${GREEN}Done...!${NC}"
+                echo "Cleaning up the useless files..."
+
+                if [ -d "./public" ]; then
+                    echo "Removing images from public..."
+
+                    cd public
+                    rm logo192.png
+                    rm logo512.png
+                    echo -e "${GREEN}Done!${NC}"
+                    cd ..
+
+                    if [ -d "./src" ]; then
+                        echo "Removing files from src..."
+
+                        cd src
+                        rm App.css
+                        rm App.test.js
+                        rm index.css
+                        rm logo.svg
+                        rm reportWebVitals.js
+                        rm setupTests.js
+                        echo -e "${GREEN}Done!${NC}"
+                        cd ..
+
+                    else
+                        echo -e "${RED}Something went wrong."
+                        echo -e "src/ is missing.${NC}"
+                    fi
+
+                    echo -e "${GREEN}All done!"
+                    echo -e "dont forget to erase the useless lines of code!${NC}"
+                else
+                    echo -e "${RED}Something went wrong."
+                    echo -e "public/ is missing.${NC}"
+                fi
+            else
+                echo -e "${RED}That folder does not exist!${NC}"
+            fi
+            ;;
+
+        --typescript)
+            if [ -d "$3" ]; then
+                echo -e "${GREEN}Starting...${NC}"
+                npx create-react-app $3 --template typescript
+                if [ "$3" != "." ]; then
+                    cd $3
+                fi
+                echo -e "${GREEN}Done...!${NC}"
+                echo "Cleaning up the useless files..."
+
+                if [ -d "./public" ]; then
+                    echo "Removing images from public..."
+
+                    cd public
+                    rm logo192.png
+                    rm logo512.png
+                    echo -e "${GREEN}Done!${NC}"
+                    cd ..
+
+                    if [ -d "./src" ]; then
+                        echo "Removing files from src..."
+
+                        cd src
+                        rm App.css
+                        rm App.test.tsx
+                        rm index.css
+                        rm logo.svg
+                        rm reportWebVitals.ts
+                        rm setupTests.ts
+                        echo -e "${GREEN}Done!${NC}"
+                        cd ..
+
+                    else
+                        echo -e "${RED}Something went wrong."
+                        echo -e "src/ is missing.${NC}"
+                    fi
+
+                    echo -e "${GREEN}All done!"
+                    echo -e "Don't forget to erase the useless lines of code!${NC}"
+                else
+                    echo -e "${RED}Something went wrong."
+                    echo -e "public/ is missing.${NC}"
+                fi
+            else
+                echo -e "${RED}Usage: reactmake [options] [arguments] [directory]"
+                echo -e "Refer to reactmake -help${NC}"
+            fi
+            ;;
+
+        *)
+            echo -e "${RED}Usage: reactmake [options] [arguments] [directory]"
+            echo -e "Refer to reactmake -help${NC}"
+            ;;
+    esac
+else
+    echo -e "${RED}Usage: reactmake [options] [arguments] [directory]"
+    echo -e "Refer to reactmake -help${NC}"
+fi
