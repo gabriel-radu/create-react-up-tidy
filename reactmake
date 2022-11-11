@@ -20,7 +20,9 @@ elif [ "$1" == "-start" ]; then
             if [ -d "$3" ]; then
                 echo -e "${GREEN}Starting...${NC}"
                 npx create-react-app $3
-                cd test1
+                if [ "$3" != "." ]; then
+                    cd $3
+                fi
                 echo -e "${GREEN}Done...!${NC}"
                 echo "Cleaning up the useless files..."
 
